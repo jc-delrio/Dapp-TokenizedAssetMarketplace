@@ -1,0 +1,15 @@
+{
+    "name": "NFT Tokenized Property",
+    "description": "Token que representa la fraccion de propiedad del activo Property (1 de 100)",
+    "image": "ipfs://bafybeicn74onemnjnwdro4up2ogq2bg7ffr3zpqvy27iaeqahxfqxeflxq/flat.jpg",
+    "attributes": [
+        {
+            "trait_type": "Property ID",
+            "value": "P000001"
+        },
+        {
+            "trait_type": "Tier",
+            "value": "Tier A"
+        }
+    ]
+}

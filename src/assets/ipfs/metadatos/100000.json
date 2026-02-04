@@ -1,0 +1,15 @@
+{
+    "name": "NFT Tokenized Vehicle",
+    "description": "Token unico que representa la propiedad del vehiculo",
+    "image": "ipfs://bafybeicn74onemnjnwdro4up2ogq2bg7ffr3zpqvy27iaeqahxfqxeflxq/car.jpg",
+    "attributes": [
+        {
+            "trait_type": "VIN",
+            "value": "V12345678901234567"
+        },
+        {
+            "trait_type": "Tier",
+            "value": "Tier S"
+        }
+    ]
+}

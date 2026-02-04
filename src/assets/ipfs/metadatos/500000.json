@@ -1,0 +1,15 @@
+{
+    "name": "NFT Tokenized Watch",
+    "description": "Edición limitada Reloj X (1 de 1000)",
+    "image": "ipfs://bafybeicn74onemnjnwdro4up2ogq2bg7ffr3zpqvy27iaeqahxfqxeflxq/watch.jpg",
+    "attributes": [
+        {
+            "trait_type": "Serial Number",
+            "value": "S0001"
+        },
+        {
+            "trait_type": "Tier",
+            "value": "Tier B"
+        }
+    ]
+}
