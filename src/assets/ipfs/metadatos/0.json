@@ -1,0 +1,19 @@
+{
+    "name": "Tokenized Property",
+    "description": "Token que representa la fraccion de propiedad del inmueble",
+    "image": "ipfs://bafybeicn74onemnjnwdro4up2ogq2bg7ffr3zpqvy27iaeqahxfqxeflxq/flat.jpg",
+    "attributes": [
+        {
+            "trait_type": "Collection",
+            "value": "Properties"
+        },
+        {
+            "trait_type": "Reference",
+            "value": "P000001"
+        },
+        {
+            "trait_type": "Tier",
+            "value": "Tier A"
+        }
+    ]
+}

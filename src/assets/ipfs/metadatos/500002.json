@@ -1,0 +1,19 @@
+{
+    "name": "Tokenized Watch",
+    "description": "Edición limitada Reloj X",
+    "image": "ipfs://bafybeicn74onemnjnwdro4up2ogq2bg7ffr3zpqvy27iaeqahxfqxeflxq/watch.jpg",
+    "attributes": [
+        {
+            "trait_type": "Collection",
+            "value": "Accessories"
+        },
+        {
+            "trait_type": "Serial Number",
+            "value": "S0003"
+        },
+        {
+            "trait_type": "Tier",
+            "value": "Tier B"
+        }
+    ]
+}
