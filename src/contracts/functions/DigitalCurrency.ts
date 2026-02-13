@@ -86,7 +86,7 @@ export const burnToken = async (amount: bigint, signer: Signer) => {
     const CurrencyContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
     try {
         const tx = await CurrencyContract.burn(amount);
-        const receipt = tx.wait();
+        const receipt = await tx.wait();
 
         // Evento
         let eventArgs = null;
@@ -95,7 +95,7 @@ export const burnToken = async (amount: bigint, signer: Signer) => {
             try {
                 const parsed = CurrencyContract.interface.parseLog(log);
 
-                if (parsed && parsed.name === 'TokenMinted') {
+                if (parsed && parsed.name === 'TokenBurned') {
                     eventArgs = parsed.args;
                     break;
                 }

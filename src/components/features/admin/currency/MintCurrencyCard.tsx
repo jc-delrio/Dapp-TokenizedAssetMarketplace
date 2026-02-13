@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { parseUnits } from "ethers";
+import { parseUnits, formatEther } from "ethers";
 import { mintToken, burnToken } from "@/contracts/functions/DigitalCurrency";
 
 const MintCurrencyCard = ({ onUpdate }: { onUpdate: () => void }) => {
@@ -23,9 +23,9 @@ const MintCurrencyCard = ({ onUpdate }: { onUpdate: () => void }) => {
         try {
             const amountBI = parseUnits(amount, decimals);
             const result = await mintToken(address, amountBI, signer!);
-            console.log(result.value + " CBCD emitidos a " + result.to);
+            console.log(formatEther(result.value) + " CBCD emitidos a " + result.to);
             toast.success("Exito", {
-                description: `${result.value} CBCD emitidos a ${result.to}`,
+                description: `${formatEther(result.value)} CBCD emitidos a ${result.to}`,
             });
         } catch (error) {
             console.log("Error al emitir CBCD", error);
@@ -43,9 +43,9 @@ const MintCurrencyCard = ({ onUpdate }: { onUpdate: () => void }) => {
         try {
             const amountBI = parseUnits(amount, decimals);
             const result = await burnToken(amountBI, signer!);
-            console.log(result.value + " CBCD quemados");
+            console.log(formatEther(result.value) + " CBCD quemados");
             toast.success("Exito", {
-                description: `${result.value} CBCD quemados`,
+                description: `${formatEther(result.value)} CBCD quemados`,
             });
         } catch (error) {
             console.log("Error al quemar CBCD", error);
