@@ -1,0 +1,11 @@
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.toaster {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
