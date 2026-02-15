@@ -3,7 +3,6 @@ import { ethers, type Signer } from "ethers";
 import { decodeError } from "../utils/decodeError";
 
 const ASSETS_ADDRESS = import.meta.env.VITE_ASSETS_ADDRESS;
-const ADMIN_ADDRESS = import.meta.env.VITE_ADMIN_ADDRESS;
 
 const isApprovedForAll = async (owner: string, operator: string, signer: Signer) => {
     const AssetsContract = new ethers.Contract(ASSETS_ADDRESS, tokenAbi, signer);
@@ -66,7 +65,7 @@ export const checkApprovalForAll = async (owner: string, operator: string, signe
 export const mintAsset = async (id: string, amount: bigint, signer: Signer) => {
     const AssetsContract = new ethers.Contract(ASSETS_ADDRESS, tokenAbi, signer);
     try {
-        const tx = await AssetsContract.mint(ADMIN_ADDRESS, id, amount, "0x");
+        const tx = await AssetsContract.mint(await signer.getAddress(), id, amount, "0x");
         const receipt = await tx.wait();
 
         // Lectura de evento
@@ -86,7 +85,7 @@ export const mintAsset = async (id: string, amount: bigint, signer: Signer) => {
         }
 
         // Fallback
-        const finalTo = eventArgs ? eventArgs[0] : ADMIN_ADDRESS;
+        const finalTo = eventArgs ? eventArgs[0] : await signer.getAddress();
         const finalId = eventArgs ? eventArgs[1] : id;
         const finalValue = eventArgs ? eventArgs[2] : amount;
 

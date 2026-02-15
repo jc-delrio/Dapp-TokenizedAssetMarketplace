@@ -1,5 +1,6 @@
 import { useWallet } from "../../hooks/useWallet";
 import { useChain } from "../../hooks/useChain";
+import { useOwner } from "../../hooks/useOwner";
 import { useWeb3 } from "../../providers/Web3Provider";
 import { Button } from "@/components/ui/button";
 import { CopyIcon } from "lucide-react";
@@ -11,10 +12,10 @@ import { useState } from "react";
 const ConnectWallet = () => {
     const { wallet, connect, disconnect } = useWallet();
     const { chains, setChain } = useChain();
+    const { isOwner } = useOwner();
     const { account, chainId } = useWeb3();
 
     const [showInfoWallet, setShowInfoWallet] = useState(false);
-    const ADMIN_ADDRESS = import.meta.env.VITE_ADMIN_ADDRESS.toLowerCase();
 
     const handleConnectWallet = async () => {
         await connect();
@@ -44,7 +45,7 @@ const ConnectWallet = () => {
                 <div className="flex flex-col gap-2">
                     <div className="flex gap-2">
                         <Button variant="destructive" onClick={handleDisconnectWallet}>Desconectar Wallet</Button>
-                        <Button variant="default" onClick={() => handleInfoWallet()}> {account === ADMIN_ADDRESS ? 'Admin' : 'User'}</Button>
+                        <Button variant="default" onClick={() => handleInfoWallet()}> {isOwner ? 'Admin' : 'User'}</Button>
                     </div>
 
                     {showInfoWallet && (
