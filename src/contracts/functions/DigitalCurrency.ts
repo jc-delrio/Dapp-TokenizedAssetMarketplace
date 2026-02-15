@@ -125,3 +125,83 @@ export const getBalance = async (address: string, signer: Signer) => {
     const balance = await CurrencyContract.balanceOf(address);
     return balance;
 }
+
+export const pause = async (signer: Signer) => {
+    const CurrencyContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
+    try {
+        const tx = await CurrencyContract.pause();
+        const receipt = await tx.wait();
+
+        // Evento
+        let eventArgs = null;
+
+        for (const log of receipt.logs) {
+            try {
+                const parsed = CurrencyContract.interface.parseLog(log);
+
+                if (parsed && parsed.name === 'ContractPaused') {
+                    eventArgs = parsed.args;
+                    break;
+                }
+            } catch (e) {
+                continue;
+            }
+        }
+
+        // Fallback
+        const finalFrom = eventArgs ? eventArgs[0] : await signer.getAddress();
+
+        return {
+            hash: receipt.hash,
+            from: finalFrom,
+        };
+
+    } catch (error: any) {
+        const decodedError = decodeError(error, CurrencyContract);
+        console.log(decodedError);
+        throw new Error(decodedError?.name);
+    }
+}
+
+export const unpause = async (signer: Signer) => {
+    const CurrencyContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
+    try {
+        const tx = await CurrencyContract.unpause();
+        const receipt = await tx.wait();
+
+        // Evento
+        let eventArgs = null;
+
+        for (const log of receipt.logs) {
+            try {
+                const parsed = CurrencyContract.interface.parseLog(log);
+
+                if (parsed && parsed.name === 'ContractUnpaused') {
+                    eventArgs = parsed.args;
+                    break;
+                }
+            } catch (e) {
+                continue;
+            }
+        }
+
+        // Fallback
+        const finalFrom = eventArgs ? eventArgs[0] : await signer.getAddress();
+
+        return {
+            hash: receipt.hash,
+            from: finalFrom,
+        };
+    } catch (error: any) {
+        const decodedError = decodeError(error, CurrencyContract);
+        console.log(decodedError);
+        throw new Error(decodedError?.name);
+    }
+}
+
+export const isPaused = async (signer: Signer) => {
+    const CurrencyContract = new ethers.Contract(TOKEN_ADDRESS, tokenAbi, signer);
+    const paused = await CurrencyContract.paused();
+    return paused;
+}
+

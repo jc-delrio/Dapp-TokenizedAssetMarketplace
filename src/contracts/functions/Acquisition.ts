@@ -215,3 +215,23 @@ export const getAssetList = async (id: string, signer: Signer) => {
     const assetList = await AcquisitionContract.assetList(id);
     return assetList;
 };
+
+export const pause = async (signer: Signer) => {
+    const AcquisitionContract = new ethers.Contract(ACQUISITION_ADDRESS, tokenAbi, signer);
+    const tx = await AcquisitionContract.pause();
+    const receipt = await tx.wait();
+    return receipt.status === 1;
+};
+
+export const unpause = async (signer: Signer) => {
+    const AcquisitionContract = new ethers.Contract(ACQUISITION_ADDRESS, tokenAbi, signer);
+    const tx = await AcquisitionContract.unpause();
+    const receipt = await tx.wait();
+    return receipt.status === 1;
+};
+
+export const isPaused = async (signer: Signer) => {
+    const AcquisitionContract = new ethers.Contract(ACQUISITION_ADDRESS, tokenAbi, signer);
+    const paused = await AcquisitionContract.paused();
+    return paused;
+};
