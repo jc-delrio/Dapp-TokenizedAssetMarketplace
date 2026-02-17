@@ -10,7 +10,7 @@ const isApprovedForAll = async (owner: string, operator: string, signer: Signer)
         const approved = await AssetsContract.isApprovedForAll(owner, operator);
         return approved;
     } catch (error) {
-        console.error("Error checking approval:", error);
+        console.error("Error comporbando permisos:", error);
         return false;
     }
 }
@@ -19,7 +19,7 @@ const setApprovalForAll = async (operator: string, signer: Signer) => {
     const AssetsContract = new ethers.Contract(ASSETS_ADDRESS, tokenAbi, signer);
     try {
         const tx = await AssetsContract.setApprovalForAll(operator, true);
-        console.log("Assets: Transaction sent:", tx.hash);
+        console.log("Assets: Transacción enviada:", tx.hash);
 
         // Esperar a que se mine la transacción
         const receipt = await tx.wait();
@@ -27,34 +27,34 @@ const setApprovalForAll = async (operator: string, signer: Signer) => {
     } catch (error: any) {
         // Manejar rechazo del usuario específicamente
         if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
-            console.log("Assets: User rejected the approval request.");
+            console.log("Assets: Permiso rechazado por el usuario.");
         } else {
-            console.error("Assets: Approval transaction failed:", error);
+            console.error("Assets: Transacción fallida:", error);
         }
         throw error; // Re-lanzar para que la función padre se entere
     }
 }
 
 export const checkApprovalForAll = async (owner: string, operator: string, signer: Signer) => {
-    console.log("Assets: Checking approval...");
+    console.log("Assets: Comprobando permisos...");
 
     const isAlreadyApproved = await isApprovedForAll(owner, operator, signer);
 
     if (isAlreadyApproved) {
-        console.log("Assets: Already approved for operator: ", operator);
+        console.log("Assets: Permiso concedido para el operador: ", operator);
         return true;
     }
 
-    console.log("Assets: Not approved. Requesting signature...");
+    console.log("Assets: Permiso no concedido. Solicitando firma...");
     try {
         const success = await setApprovalForAll(operator, signer);
         if (success) {
-            console.log("Assets: Approval successful!");
+            console.log("Assets: Permiso concedido");
             return true;
         }
     } catch (error) {
         // Aquí capturamos si el usuario rechazó o falló la tx
-        console.log("Assets: Approval process failed or was rejected.");
+        console.log("Assets: Permiso no concedido");
         return false;
     }
 

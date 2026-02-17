@@ -6,8 +6,8 @@ import ManageDemand from "./ManageDemand";
 const UserView = () => {
     const adminTabs = [
         { value: "Home", label: "Mis Activos", content: <ManageCurrency /> },
-        { value: "Offer", label: "Oferta", content: <ManageOffer /> },
-        { value: "Demand", label: "Demanda", content: <ManageDemand /> },
+        { value: "Offer", label: "Ofertas", content: <ManageOffer /> },
+        { value: "Demand", label: "Demandas", content: <ManageDemand /> },
     ];
 
     return (

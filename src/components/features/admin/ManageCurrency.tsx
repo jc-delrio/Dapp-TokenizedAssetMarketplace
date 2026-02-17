@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useWallet } from '@/hooks/useWallet';
 import { getBalance } from "@/contracts/functions/DigitalCurrency";
 import { formatUnits } from "ethers";
-import MintCurrencyCard from "./currency/MintCurrencyCard";
+import CurrencyCard from "./currency/CurrencyCard";
 
 const ManageCurrency = () => {
     const [balance, setBalance] = useState<string>("");
@@ -27,7 +27,7 @@ const ManageCurrency = () => {
                 <p>Balance: {balance} CBCD</p>
             </div>
 
-            <MintCurrencyCard onUpdate={() => handleGetBalance(wallet!.accounts[0].address)} />
+            <CurrencyCard onUpdate={() => handleGetBalance(wallet!.accounts[0].address)} />
 
         </div>
     )
