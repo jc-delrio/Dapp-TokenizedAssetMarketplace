@@ -22,8 +22,8 @@ const TransferCurrencyCard = ({ onUpdate }: { onUpdate: () => void }) => {
             const amountBI = parseUnits(amount, decimals);
 
             const result = await transferToken(address, amountBI, signer!);
-            console.log(`${formatEther(result.value)} tokens transferidos a ${address}`);
-            toast.success(`${formatEther(result.value)} tokens transferidos a ${address}`);
+            console.log(`${amount} tokens transferidos a ${address}`);
+            toast.success(`${amount} tokens transferidos a ${address}`);
         } catch (error) {
             console.error("Error al transferir:", error);
             toast.error("Error al transferir");
