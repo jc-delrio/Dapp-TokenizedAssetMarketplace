@@ -5,7 +5,7 @@ import { AssetItem } from '@/components/common/AssetItem';
 import { sellAsset } from '@/contracts/functions/Acquisition';
 import { type Asset } from '@/contracts/functions/AlchemySDK';
 import { useWeb3 } from '@/providers/Web3Provider';
-import { checkApprovalForAll } from '@/contracts/functions/DigitalAssets';
+import { burnAsset, checkApprovalForAll } from '@/contracts/functions/DigitalAssets';
 import { toast } from 'sonner';
 
 const ACQUISITION_ADDRESS = import.meta.env.VITE_ACQUISITION_ADDRESS;
@@ -15,6 +15,7 @@ const OwnedAssetsCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
 
     const [amount, setAmount] = useState<string>("");
     const [isSelling, setIsSelling] = useState(false);
+    const [isBurning, setIsBurning] = useState(false);
 
     const handleSellAsset = async () => {
         setIsSelling(true);
@@ -30,6 +31,24 @@ const OwnedAssetsCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
             toast.error("Error al vender");
         } finally {
             setIsSelling(false);
+            onUpdate?.();
+        }
+    };
+
+    const handleBurnAsset = async () => {
+        setIsBurning(true);
+        try {
+            const amountBI = BigInt(amount || "0");
+
+            await checkApprovalForAll(account!, ACQUISITION_ADDRESS, signer!);
+            const tx = await burnAsset(asset.tokenId, amountBI, signer!);
+            console.log(`${tx.value} tokens (ID: ${tx.id}) quemados`);
+            toast.success("Exito", { description: `${tx.value} tokens (ID: ${tx.id}) quemados` });
+        } catch (error) {
+            console.error("Error al quemar:", error);
+            toast.error("Error al quemar");
+        } finally {
+            setIsBurning(false);
             onUpdate?.();
         }
     };
@@ -55,6 +74,14 @@ const OwnedAssetsCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
                                 onClick={handleSellAsset}
                             >
                                 {isSelling ? "Procesando..." : "Vender"}
+                            </Button>
+
+                            <Button
+                                className="w-full bg-red-500 mt-2"
+                                disabled={amount < "1" || amount > asset.balance || isBurning}
+                                onClick={handleBurnAsset}
+                            >
+                                {isBurning ? "Procesando..." : "Quemar"}
                             </Button>
 
                         </div>
