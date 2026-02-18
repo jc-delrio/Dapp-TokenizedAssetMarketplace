@@ -1,16 +1,16 @@
-# Caso Práctico Máster en Ingeniería y Desarrollo Blockchain
-## 🛒 Modelización de un Sistema de Compra-Venta de Activos Tokenizados
+## Caso Práctico Máster en Ingeniería y Desarrollo Blockchain
+# 🛒 Modelización de un Sistema de Compra-Venta de Activos Tokenizados
 
 Esta aplicación descentralizada (DApp) permite la gestión, compra y venta de activos tokenizados (Real World Assets - RWA) utilizando el estándar ERC1155 para los activos y ERC20 para la moneda de pago.
 
 La plataforma ofrece un panel de administración para el Fondo de Inversión y una interfaz de usuario para inversores, permitiendo operaciones de mercado primario y secundario.
 
-### Test Dapp:
-Hay disponible un despliegue en Vercel para interactuar con la Dapp y los contratos desplegados en Sepolia:
-🔗 Abrir Dapp: [https://tokenized-asset-marketplace.vercel.app/](https://tokenized-asset-marketplace.vercel.app/)
+## Test Dapp:
+Hay disponible un despliegue en Vercel para interactuar con la Dapp y los contratos desplegados en Sepolia:     
+🔗 [Abrir Dapp](https://dapp-tokenized-asset-marketplace.vercel.app/)
 > Las funciones de administrador no estarán disponibles, a menos que se transfiera la propiedad de los contratos.
 
-### Índice
+## Índice
 1. [🛠️ Tecnologías y Herramientas](#-tecnologías-y-herramientas)
 2. [⛓️ Despliegue de Contratos](#-despliegue-de-contratos)
 3. [📦 Instalación Dapp](#-instalación-dapp)
@@ -18,7 +18,7 @@ Hay disponible un despliegue en Vercel para interactuar con la Dapp y los contra
 5. [📋 Requisitos Técnicos](#-requisitos-técnicos)
 6. [🧠 Otros aspectos técnicos](#-otros-aspectos-técnicos)
 
-### 🛠️ Tecnologías y Herramientas
+## 🛠️ Tecnologías y Herramientas
 **Frontend & UI**
 
 - ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white): Entorno de desarrollo y empaquetador ultrarrápido.
@@ -49,10 +49,52 @@ Hay disponible un despliegue en Vercel para interactuar con la Dapp y los contra
 
 - ![OpenZeppelin](https://img.shields.io/badge/OpenZeppelin-4E5EE4?style=flat&logo=openzeppelin&logoColor=white): Estándares de smart contracts (ERC20, ERC1155, Ownable, Pausable).
 
-La lógica de Smart Contracts se encuentra en un repositorio separado:        
-🔗 Repositorio de Contratos: [https://github.com/jc-delrio/Solidity-TokenizedAssetMarketplace]
+> La lógica de Smart Contracts se encuentra en un repositorio separado:        
+> 🔗 [Repositorio de Contratos](https://github.com/jc-delrio/Solidity-TokenizedAssetMarketplace)
 
-> **NOTA: Mejoras previas**             
+
+
+## 🚀 Despliegue de Contratos
+
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/jc-delrio/Solidity-TokenizedAssetMarketplace.git
+cd Solidity-TokenizedAssetMarketplace
+```
+2. Instalar dependencias:
+```bash
+npm install
+```
+
+3. Realizar Test de contratos (Opcional)
+```bash
+npx hardhat test
+```
+
+4. Añadir variables de entorno RPC_URL, PRIVATE_KEY y ETHERSCAN_API_KEY a keystore de hardhat
+> ⚠️ INFORMACIÓN CONFIDENCIAL
+```bash
+npx hardhat keystore set --force RPC_URL
+npx hardhat keystore set --force PRIVATE_KEY
+npx hardhat keystore set --force ETHERSCAN_API_KEY
+```
+
+5. Desplegar los smart contracts en la red de pruebas Sepolia.
+Se usa hardhat mediante ignition para el despliegue de los smart contracts.
+> Despliegue en lotes desde Acquisition.module.ts. Primero se despliegan los contratos DigitalCurrency, DigitalAssets, y posteiormente se despliega Acquisition en base a las direcciones de los dos anteriores        
+```bash
+npx hardhat ignition deploy ignition/modules/Acquisition.ts --network sepolia -verify
+```
+
+6. Anotar dirección y ABI de los contratos desplegados
+En mi caso, he seguido el hash de la transaccion y comprobado que el contrato estaba verificado en etherscan.
+Desde etherscan he obtenido las direcciones y el ABI de los contratos desplegados:
+> Address DigitalCurrency: 0x9BE700De848c67cF1191aBFe6E1302F9cC2E80D6         
+> Address DigitalAssets: 0x9900dF5742343fc7ff3A99BA9D105411D041DD1C         
+> Address Acquisition: 0x08A414c2F10705e4ACdBa2D628a5038e1ECDAF8b     
+
+
+**NOTA: Mejoras previas en contratos**             
 > En base a revisiones anteriores, los smart contracts de la parte 1 han sido ligeramente actualizados para mejorar la eficiencia de las transacciones:
 > - Se usan uint256 para evitar problemas en operaciones (ahorro de gas al evitar comprobación de overflow)
 > - La funcion burn de los tokens ahora puede ser ejecutada por los propietarios de los tokens
@@ -88,46 +130,9 @@ La lógica de Smart Contracts se encuentra en un repositorio separado:
 > });
 > ```
 
-### 🚀 Despliegue de Contratos
 
-1. Clonar el repositorio:
-```bash
-git clone https://github.com/jc-delrio/Solidity-TokenizedAssetMarketplace.git
-cd Solidity-TokenizedAssetMarketplace
-```
-2. Instalar dependencias:
-```bash
-npm install
-```
 
-3. Realizar Test de contratos (Opcional)
-```bash
-npx hardhat test
-```
-
-4. Añadir variables de entorno RPC_URL, PRIVATE_KEY y ETHERSCAN_API_KEY a keystore de hardhat
-> ⚠️ INFORMACIÓN CONFIDENCIAL
-```bash
-npx hardhat keystore set --force RPC_URL
-npx hardhat keystore set --force PRIVATE_KEY
-npx hardhat keystore set --force ETHERSCAN_API_KEY
-```
-
-5. Desplegar los smart contracts en la red de pruebas Sepolia.
-Se usa hardhat mediante ignition para el despliegue de los smart contracts.
-> Despliegue en lotes desde Acquisition.module.ts. Primero se despliegan los contratos DigitalCurrency, DigitalAssets, y posteiormente se despliega Acquisition en base a las direcciones de los dos anteriores        
-```bash
-npx hardhat ignition deploy ignition/modules/Acquisition.ts --network sepolia -verify
-```
-
-6. Anotar dirección y ABI de los contratos desplegados
-En mi caso, he seguido el hash de la transaccion y comprobado que el contrato estaba verificado en etherscan.
-Desde etherscan he obtenido las direcciones y el ABI de los contratos desplegados:
-> Address DigitalCurrency: 0x9BE700De848c67cF1191aBFe6E1302F9cC2E80D6 
-> Address DigitalAssets: 0x9900dF5742343fc7ff3A99BA9D105411D041DD1C
-> Address Acquisition: 0x08A414c2F10705e4ACdBa2D628a5038e1ECDAF8b
-
-### 📦 Instalación Dapp
+## 📦 Instalación Dapp
 1. **Clonar el repositorio:**
 ```bash
 git clone https://github.com/jc-delrio/Dapp-TokenizedAssetMarketplace.git
@@ -157,56 +162,72 @@ VITE_RPC_API_KEY=tu_rpc_api_key
 pnpm dev
 ```
 
-### ✏️ Decisiones de diseño
-Un contrato ERC20 para moneda en mercado
 
-Un contrato ERC1155 para activos tokenizados flexibles
 
-Un contrato de Adquisición que permite la compra/venta de activos tokenizados al fondo
+## ✏️ Decisiones de diseño 
+Se usa un contrato ERC20 para moneda en mercado (DigitalCurrency).
+Las funciones de este contrato se gestionan desde la Dapp para minteo, quemado y permisos relativos a la moneda digital o pausar/reanudar contrato.
 
-Un contrato de Trading que permite la compra/venta de activos tokenizados entre usuarios
+Un contrato ERC1155 para activos tokenizados flexibles (DigitalAssets).
+Las funciones de este contrato se gestionan desde la Dapp para minteo, quemado y permisos relativos a los activos o pausar/reanudar contrato.
 
-....
+Un contrato de Adquisición que permite la compra/venta de activos tokenizados al fondo.
+Este es el contrato principal de la Dapp, donde se realizan las transacciones de compra/venta de activos tokenizados entre el fondo y los usuarios.
+El caso de negocio implementado sigue la siguiente lógica:
+- El fondo define los activos con los que trabajar. Se categorizan en los rangos definidos y se generan los metadatos correspondientes.
+- El fondo libera al mercado los activos que desea, indicando la cantidad y el precio.
+- Los usuarios pueden comprar los activos liberados por el fondo.
+- Los usuarios pueden vender los activos que han comprado al fondo, siempre que el fondo los haya liberado con opción de venta.
 
-### 📋 Requisitos Técnicos
-1. **Interface WEB**
+
+
+## 📋 Requisitos Técnicos
+
+### Interface WEB
 Se distinguen dos vistas diferenciadas: **Administrador** y **Usuario**.
 
-1.1. **Administrador**
+**Administrador**        
 Esta vista se muestra cuando la wallet conectada coincide con la del administrador.
 Se muestran 3 pestañas:
 
 - *Gestión de CBCD*: Permite mintear más monedas digitales CBCD (a cualquier dirección indicada). Tambien es posible quemar CBCD del fondo (administrador)
 En esta pestaña se visualiza la cantidad de CBCD a disposición del fondo.
 > El administrador es el único que puede mintear moneda digital.
+
 ![Mintear CBCD](src/assets/captures/admin_mint_CBCD.JPG)
 
 - *Gestión de Activos*: Permite mintear nuevos activos. Estos activos se asignan al fondo (administrador), quien decide su liberación al mercado
 > El administrador es el único que puede mintear nuevos activos.
+
 ![Mintear Activos](src/assets/captures/admin_mint_asset.JPG)
 
 En esta pestaña es posible ver los activos minteados pendientes de liberar y liberados al mercado aún sin vender:
 > El administrador es el único que puede gestionar los activos para su liberación al mercado.
+
 ![Liberar Activos](src/assets/captures/admin_list_asset.JPG)
 
 - *Gestión de Contratos*: Permite Pausar y Reanudar los contratos:
 > El administrador es el único que puede pausar y reanudar los contratos.
+
 ![Gestionar Contratos](src/assets/captures/admin_pause_contracts.JPG)
 
-1.2. **Usuario**
+**Usuario**         
 En caso de que la wallet no sea la del administrador, se muestra esta vista de usuario.
 Tambien dispone de 3 pestañas:
 
 - *Mis Activos*: Permite transferir o quemar CBCD disponible, así como gestionar los activos que posee el usuario.
 Esta pestaña muestra el balance de CBCD disponible para realizar compras.
+
 ![Mis Activos](src/assets/captures/user_my_assets.JPG)
 
 - *Ofertas*: Permite ver las ofertas disponibles de activos liberados al mercado. Pueden ser ofertados por el fondo o por otros usuarios.
+
 ![Ofertas](src/assets/captures/user_offers.JPG)
 
 - *Demandas*: Permite ver las demandas que otros usuarios han realizado sobre activos liberados por el fondo pero que ya han sido comprados.
 
-2. **Visualización de Balances**
+
+### Visualización de Balances          
 Obtención de balances CBCD mediante llamada a funcion *balanceOf* del contrato *DigitalCurrency*.
 Este balance se actualiza si se realiza alguna operación.
 ```js
@@ -218,10 +239,11 @@ export const getBalance = async (address: string, signer: Signer) => {
 ```
 ![Balance](src/assets/captures/user_balance.JPG)
 
-3. **Gestión de Emisión**
+
+### Gestión de Emisión        
 Solo el administrador puede acceder a la pestaña para mintear (CBCD o Activos).
 
-3.1. **Emisión de CBCD**:
+**Emisión de CBCD**                
 Esta moneda digital tiene asignado un icono accesible desde Pinata IPFS.
 
 Se puede mintear CBCD a cualquier dirección indicada:
@@ -271,10 +293,11 @@ También es posible quemar CBCD del fondo (administrador):
         setIsBurning(false);
         onUpdate?.();
     }
-```
+``` 
 ![Burn CBCD](src/assets/gifs/burn_cbcd.gif)
 
-3.2. **Emisión de Activos**:
+
+### Emisión de Activos         
 Se pueden mintear nuevos Activos.
 Para que los tokens emitidos dispongan de metadatos, previamente debe estar disponible en IPFS. Ver [Pinata IPFS](#-pinata-ipfs).
 Estos activos pertenecerán al fondo (administrador).
@@ -351,8 +374,10 @@ También es posible quemar Activos no liberados al mercado.
 ```
 ![Burn Asset](src/assets/gifs/burn_asset.gif)
 
-4. **Transferencias**
-4.1. **Transferencia de CBCD**:
+
+### Transferencias         
+
+**Transferencia de CBCD**            
 Los usuarios pueden transferir su CBCD a cualquier dirección indicada.
 ```js
 // TransferCurrencyCard.tsx
@@ -375,7 +400,7 @@ Los usuarios pueden transferir su CBCD a cualquier dirección indicada.
 ```
 ![Transferir CBCD](src/assets/gifs/transfer_cbcd.gif)
 
-4.2. **Transferencia de Activos**:
+**Transferencia de Activos**           
 Los usuarios pueden adquirir activos liberados al mercado.
 Este proceso de compra requiere que el usuario otorgue permisos al contrato Acquisition para la transferencia de CBCD:
 ```js 
@@ -395,9 +420,10 @@ const newToken = await sellAsset(asset.tokenId, amountBI, signer!);
 ![Vender Asset](src/assets/gifs/sell_asset.gif)
 
 
-### 🧠 Otros aspectos técnicos
 
-#### Estructura App
+## 🧠 Otros aspectos técnicos         
+
+### Estructura App
 ```text
 src/
 ├── assets/
@@ -448,7 +474,7 @@ src/
 ```
 
 
-#### Pinata IPFS
+### Pinata IPFS
 Se han subido a Pinata imagenes y metadatos para la moneda digital y 3 tipos de activos a modo de ejemplo.
 El minteo de los activos se ha determinado por tramos para permitir una reserva de IDs de cada tipo de activo:
 
@@ -467,10 +493,11 @@ Se emiten tokens unicos por accesorios (NFT). Los metadatos serán unicos para c
 > setURI("ipfs://<CID>/")
 >```
 
-#### Ethers.js
+
+### Ethers.js
 Se usa ethers.js para la interacción con los smart contracts.
 
-1. **Conexión a wallet**
+**Conexión a wallet**
 Se usa un provider con la librería **Web3OnBoard** para conectar la wallet del usuario. Esta librería nos permite conectar una wallet desde diferentes billeteras.
 
 Se usan los hooks **useWallet** y **useChain** para transferir al resto de componentes la direccion de la wallet y la cadena usada.
@@ -479,15 +506,17 @@ Se usa el hook **useOwner** que recoge la dirección del propietario del smart c
 
 ![Conectar Wallet](src/assets/gifs/connect_wallet_short.gif)
 
-2. **Context Web3Provider y Hook useOwner**
+**Context Web3Provider y Hook useOwner**
 Se crea un context provider **Web3Provider** que encapsula la app para facilitar información específica de la conexión, evitando la repetición de obtención de *provider* y *signer* en las diferentes funciones que interactúan con los smart contracts.
 
-3. **AlchemySDK y Hook useAssets**
+**AlchemySDK y Hook useAssets**
 Se crea un hook **useAssets** que recoge la lista de los activos correspondiente a cada pestaña para su distribución a componentes.
 Para la obtención de assets se usa el **SDK de Alchemy**, que nos permite obtener los activos de forma optimizada mediante **getTokensForOwner** .
 
 **Decodificación de errores personalizados en smart contracts**
 Se crea una funcion **decodeError** que nos permite decodificar los errores de los smart contracts, obteniendo el nombre de la funcion que ha fallado y los parametros que se han pasado a la funcion.
+
+
 
 
 ### License
