@@ -205,7 +205,6 @@ Esta pestaña muestra el balance de CBCD disponible para realizar compras.
 ![Ofertas](src/assets/captures/user_offers.JPG)
 
 - *Demandas*: Permite ver las demandas que otros usuarios han realizado sobre activos liberados por el fondo pero que ya han sido comprados.
-![Demandas](src/assets/captures/user_demands.JPG)
 
 2. **Visualización de Balances**
 Obtención de balances CBCD mediante llamada a funcion *balanceOf* del contrato *DigitalCurrency*.
@@ -248,7 +247,7 @@ Se puede mintear CBCD a cualquier dirección indicada:
         onUpdate?.();
     }
 ```
-![Mint CBCD](src/assets/gifs/mint_cbc.gif)
+![Mint CBCD](src/assets/gifs/mint_cbcd.gif)
 
 También es posible quemar CBCD del fondo (administrador):
 ```js
@@ -273,7 +272,7 @@ También es posible quemar CBCD del fondo (administrador):
         onUpdate?.();
     }
 ```
-![Burn CBCD](src/assets/gifs/burn_cbc.gif)
+![Burn CBCD](src/assets/gifs/burn_cbcd.gif)
 
 3.2. **Emisión de Activos**:
 Se pueden mintear nuevos Activos.
@@ -328,7 +327,7 @@ Es importante mencionar que en este punto el administrador otorga permisos al co
         }
     };
 ```
-![Listar Asset](src/assets/gifs/list_asset.gif)
+![Listar Asset](src/assets/gifs/list_asset_approve.gif)
 
 También es posible quemar Activos no liberados al mercado.
 ```js
@@ -374,7 +373,7 @@ Los usuarios pueden transferir su CBCD a cualquier dirección indicada.
         }
     };
 ```
-![Transferir CBCD](src/assets/gifs/transfer_cbc.gif)
+![Transferir CBCD](src/assets/gifs/transfer_cbcd.gif)
 
 4.2. **Transferencia de Activos**:
 Los usuarios pueden adquirir activos liberados al mercado.
