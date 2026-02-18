@@ -21,7 +21,7 @@ const TransferCurrencyCard = ({ onUpdate }: { onUpdate: () => void }) => {
         try {
             const amountBI = parseUnits(amount, decimals);
 
-            const result = await transferToken(address, amountBI, signer!);
+            await transferToken(address, amountBI, signer!);
             console.log(`${amount} tokens transferidos a ${address}`);
             toast.success(`${amount} tokens transferidos a ${address}`);
         } catch (error) {
