@@ -7,7 +7,7 @@ import { type Asset } from '@/contracts/functions/AlchemySDK';
 import { useWeb3 } from '@/providers/Web3Provider';
 import { checkAllowance } from '@/contracts/functions/DigitalCurrency';
 import { toast } from 'sonner';
-import { parseUnits, formatEther } from 'ethers';
+import { formatEther } from 'ethers';
 
 const ACQUISITION_ADDRESS = import.meta.env.VITE_ACQUISITION_ADDRESS;
 
@@ -16,18 +16,17 @@ const SupplyAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
 
     const [amount, setAmount] = useState<string>("");
     const [isBuying, setIsBuying] = useState(false);
-    const decimals = 18;
 
     const handleBuyAsset = async () => {
         setIsBuying(true);
         try {
             const amountBI = BigInt(amount || '0');
-            const totalValue = parseUnits((Number(amount) * Number(asset.value)).toString(), decimals);
+            const totalValue = amountBI * BigInt(asset.price);
 
             await checkAllowance(ACQUISITION_ADDRESS, totalValue, signer!);
             const result = await buyAsset(asset.tokenId, amountBI, signer!);
-            console.log(`${result.buyer} compró ${formatEther(amountBI)} tokens (ID: ${result.id}) por ${result.totalValue} CBCD`);
-            toast.success(`${result.buyer} compró ${formatEther(amountBI)} tokens (ID: ${result.id}) por ${result.totalValue} CBCD`);
+            console.log(`${result.buyer} compró ${amountBI} tokens (ID: ${result.id}) por ${formatEther(result.totalValue)} CBCD`);
+            toast.success(`${result.buyer} compró ${amountBI} tokens (ID: ${result.id}) por ${formatEther(result.totalValue)} CBCD`);
         } catch (error) {
             console.error("Error al comprar:", error);
             toast.error("Error al comprar");
@@ -46,7 +45,7 @@ const SupplyAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
                             <Input
                                 type="text"
                                 placeholder="Precio"
-                                value={formatEther(asset.value) + " CBCD"}
+                                value={formatEther(asset.price) + " CBCD"}
                                 disabled
                                 className="bg-white"
                             />
@@ -64,7 +63,7 @@ const SupplyAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
                                 disabled={Number(amount) < 1 || Number(amount) > Number(asset.balance) || isBuying}
                                 onClick={handleBuyAsset}
                             >
-                                {isBuying ? "Procesando..." : Number(amount) > 0 && Number(amount) <= Number(asset.balance) ? "Comprar por " + formatEther(BigInt(Number(amount) * Number(asset.value))) + " CBCD" : "Comprar"}
+                                {isBuying ? "Procesando..." : Number(amount) > 0 && Number(amount) <= Number(asset.balance) ? "Comprar por " + formatEther(BigInt(Number(amount) * Number(asset.price))) + " CBCD" : "Comprar"}
                             </Button>
                         </div>
                     </div>

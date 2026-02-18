@@ -6,6 +6,7 @@ import { sellAsset } from '@/contracts/functions/Acquisition';
 import { type Asset } from '@/contracts/functions/AlchemySDK';
 import { useWeb3 } from '@/providers/Web3Provider';
 import { checkApprovalForAll } from '@/contracts/functions/DigitalAssets';
+import { toast } from 'sonner';
 
 const ACQUISITION_ADDRESS = import.meta.env.VITE_ACQUISITION_ADDRESS;
 
@@ -23,8 +24,10 @@ const OwnedAssetsCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
             await checkApprovalForAll(account!, ACQUISITION_ADDRESS, signer!);
             const newToken = await sellAsset(asset.tokenId, amountBI, signer!);
             console.log(`${newToken.amount} tokens (ID: ${newToken.id}) vendidos al fondo`);
+            toast.success(`${newToken.amount} tokens (ID: ${newToken.id}) vendidos al fondo`);
         } catch (error) {
             console.error("Error al vender:", error);
+            toast.error("Error al vender");
         } finally {
             setIsSelling(false);
             onUpdate?.();
@@ -33,7 +36,7 @@ const OwnedAssetsCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
 
     return (
         <div className="flex flex-row w-full">
-            <AssetItem asset={asset} amount={asset.available.toString()}>
+            <AssetItem asset={asset} amount={asset.balance.toString()}>
                 <div className="space-y-3">
                     <div className="flex gap-2">
                         <div className="flex-1">

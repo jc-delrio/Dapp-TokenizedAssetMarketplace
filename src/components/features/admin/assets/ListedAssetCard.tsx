@@ -22,8 +22,8 @@ const ListedAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
 
     useEffect(() => {
         setMarketable(asset.marketable);
-        setPrice(formatEther(asset.value));
-    }, [asset.marketable, asset.value]);
+        setPrice(formatEther(asset.price));
+    }, [asset.marketable, asset.price]);
 
     const handleDelistAsset = async () => {
         setIsDelisting(true);
@@ -74,7 +74,7 @@ const ListedAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
                         <div className="flex-1">
                             <Button
                                 className="w-full bg-yellow-500"
-                                disabled={Number(amount) < 1 || isDelisting}
+                                disabled={Number(amount) < 1 || Number(amount) > asset.available || isDelisting}
                                 onClick={handleDelistAsset}
                             >
                                 {isDelisting ? "Procesando..." : "Desabastecer"}
@@ -86,7 +86,7 @@ const ListedAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate?: () => v
                     <div className="flex items-center space-x-2">
                         <Input
                             type="number"
-                            placeholder="Precio"
+                            placeholder="Precio CBCD"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                             className="bg-white"
