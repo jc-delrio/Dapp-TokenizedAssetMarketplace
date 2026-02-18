@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useWeb3 } from '@/providers/Web3Provider';
-import { parseUnits } from "ethers";
+import { formatEther, parseUnits } from "ethers";
 import { transferToken, burnToken } from '@/contracts/functions/DigitalCurrency';
 import { toast } from 'sonner';
 
@@ -22,8 +22,8 @@ const TransferCurrencyCard = ({ onUpdate }: { onUpdate: () => void }) => {
             const amountBI = parseUnits(amount, decimals);
 
             const result = await transferToken(address, amountBI, signer!);
-            console.log(`${result.value} tokens transferidos a ${address}`);
-            toast.success(`${result.value} tokens transferidos a ${address}`);
+            console.log(`${formatEther(result.value)} tokens transferidos a ${address}`);
+            toast.success(`${formatEther(result.value)} tokens transferidos a ${address}`);
         } catch (error) {
             console.error("Error al transferir:", error);
             toast.error("Error al transferir");
@@ -39,8 +39,8 @@ const TransferCurrencyCard = ({ onUpdate }: { onUpdate: () => void }) => {
             const amountBI = parseUnits(amount, decimals);
 
             const result = await burnToken(amountBI, signer!);
-            console.log(`${result.value} tokens quemados`);
-            toast.success(`${result.value} tokens quemados`);
+            console.log(`${formatEther(result.value)} tokens quemados`);
+            toast.success(`${formatEther(result.value)} tokens quemados`);
         } catch (error) {
             console.error("Error al quemar:", error);
             toast.error("Error al quemar");
