@@ -4,10 +4,10 @@ import { decodeError } from "../utils/decodeError";
 
 const ACQUISITION_ADDRESS = import.meta.env.VITE_ACQUISITION_ADDRESS;
 
-export const listNewAsset = async (id: string, supply: bigint, value: bigint, marketable: boolean, signer: Signer) => {
+export const listAsset = async (id: string, supply: bigint, value: bigint, marketable: boolean, signer: Signer) => {
     const AcquisitionContract = new ethers.Contract(ACQUISITION_ADDRESS, tokenAbi, signer);
     try {
-        const tx = await AcquisitionContract.listNewAsset(id, supply, value, marketable);
+        const tx = await AcquisitionContract.listAsset(id, supply, value, marketable);
         const receipt = await tx.wait();
 
         // Lectura de evento

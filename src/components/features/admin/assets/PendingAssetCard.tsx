@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
-import { listNewAsset } from '@/contracts/functions/Acquisition';
+import { listAsset } from '@/contracts/functions/Acquisition';
 import { burnAsset } from '@/contracts/functions/DigitalAssets';
 import { AssetItem } from '@/components/common/AssetItem';
 import { type Asset } from '@/contracts/functions/AlchemySDK';
@@ -27,7 +27,7 @@ const PendingAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate: () => v
         const amountBI = BigInt(amount || "0");
         const priceWei = parseUnits(price || "0", 18);
         try {
-            const tx = await listNewAsset(asset.tokenId, amountBI, priceWei, marketable, signer!);
+            const tx = await listAsset(asset.tokenId, amountBI, priceWei, marketable, signer!);
 
             await checkApprovalForAll(account!, ACQUISITION_ADDRESS, signer!); // Damos permiso al contrato para gestionar los activos liberados al mercado
             await checkAllowance(ACQUISITION_ADDRESS, MaxUint256, signer!); // Damos permiso al contrato para gestionar los CBCD del fondo
@@ -76,7 +76,7 @@ const PendingAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate: () => v
                         <div className="flex-1">
                             <Input
                                 type="number"
-                                placeholder="Precio"
+                                placeholder="Precio CBCD"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                                 className="bg-white"
@@ -102,14 +102,14 @@ const PendingAssetCard = ({ asset, onUpdate }: { asset: Asset, onUpdate: () => v
                     <div className="flex flex-col gap-2">
                         <Button
                             className="w-full"
-                            disabled={Number(amount) < 1 || Number(amount) > Number(asset.balance) || Number(price) < 1 || isListing}
+                            disabled={Number(amount) < 1 || Number(amount) > Number(asset.balance) - Number(asset.available) || Number(price) < 1 || isListing}
                             onClick={handleListNewAsset}
                         >
                             {isListing ? "Procesando..." : "Liberar al Mercado"}
                         </Button>
                         <Button
                             className="w-full bg-red-500"
-                            disabled={Number(amount) < 1 || Number(amount) > Number(asset.balance) || isBurning}
+                            disabled={Number(amount) < 1 || Number(amount) > Number(asset.balance) - Number(asset.available) || isBurning}
                             onClick={handleBurnAsset}
                         >
                             {isBurning ? "Procesando..." : "Quemar"}

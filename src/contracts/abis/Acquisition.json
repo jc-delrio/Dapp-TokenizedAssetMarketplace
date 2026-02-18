@@ -397,7 +397,7 @@
                 "type": "bool"
             }
         ],
-        "name": "listNewAsset",
+        "name": "listAsset",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
