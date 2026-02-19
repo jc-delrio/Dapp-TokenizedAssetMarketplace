@@ -83,7 +83,7 @@ const ManageHome = () => {
                     <OwnedAssetsCard
                         key={`${asset.contract.address}-${asset.tokenId}`}
                         asset={asset}
-                        onUpdate={() => refreshAssets()}
+                        onUpdate={() => { refreshAssets(); handleGetBalance(true); }}
                     />
                 )}
             />
