@@ -13,10 +13,10 @@ La plataforma ofrece un panel de administración para el Fondo de Inversión y u
 ---
 
 ## Índice
-1. [🛠️ Tecnologías y Herramientas](#-tecnologías-y-herramientas)
+1. [🛠️ Tecnologías y Herramientas](#%EF%B8%8F-tecnologías-y-herramientas)
 2. [⛓️ Despliegue de Contratos](#-despliegue-de-contratos)
 3. [📦 Instalación Dapp](#-instalación-dapp)
-4. [✏️ Decisiones de diseño](#-decisiones-de-diseño)
+4. [✏️ Decisiones de diseño](#%EF%B8%8F-decisiones-de-diseño)
 5. [📋 Requisitos Técnicos](#-requisitos-técnicos)
 6. [🧠 Otros aspectos técnicos](#-otros-aspectos-técnicos)
 
@@ -379,7 +379,9 @@ También es posible quemar CBCD del fondo (administrador):
 <summary><b>2. Emisión de Activos</b></summary>
 
 Se pueden mintear nuevos Activos.
-Para que los tokens emitidos dispongan de metadatos, previamente debe estar disponible en IPFS. Ver [Pinata IPFS](#-pinata-ipfs).
+Para que los tokens emitidos dispongan de metadatos, previamente debe estar disponible en IPFS.     
+Ver [Pinata IPFS](#pinata-ipfs).           
+
 Estos activos pertenecerán al fondo (administrador).
 ```js
 // MintAssetCard.tsx
